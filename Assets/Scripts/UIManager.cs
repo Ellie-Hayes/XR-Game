@@ -17,7 +17,8 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Health PlayerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
+        PlayerHealth.OnHealthChanged += UpdateHealth;
     }
 
     // Update is called once per frame
@@ -35,5 +36,10 @@ public class UIManager : MonoBehaviour
     void UpdateScore()
     {
         scoreText.text = "Score: " + score.ToString();
+    }
+
+    void UpdateHealth(int currentHealth, int MaxHealth)
+    {
+        Debug.Log("Health Health"); 
     }
 }
