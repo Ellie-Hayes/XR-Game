@@ -1,18 +1,20 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class TankEnemy : MonoBehaviour
+public class TankEnemy : Enemy
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    private GameObject tankTop; 
 
     // Update is called once per frame
     void Update()
     {
-        
+        Move();
+
+        Vector3 lookPos = transform.position - target.transform.position;
+        tankTop.transform.rotation = Quaternion.LookRotation(lookPos);
     }
 }

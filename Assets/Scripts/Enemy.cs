@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
     protected Animator anim;
     protected Health health;
+    protected NavMeshAgent agent;
+    protected GameObject target;
 
     [SerializeField]
     protected int damage;
@@ -18,16 +21,22 @@ public class Enemy : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         health = GetComponent<Health>();
+        agent = GetComponent<NavMeshAgent>();
 
         if (health != null)
         {
             health.OnHealthDepleted += EnemyDeath; 
         }
+
+        target = GameObject.FindGameObjectWithTag("Player");
+         
     }
 
     protected virtual void Move()
     {
-
+        
+        agent.destination = target.transform.position;
+        agent.speed = speed;
     }
 
     protected virtual void Attack()
