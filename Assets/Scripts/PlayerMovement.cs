@@ -41,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
             float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSpeed, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0.0f);
+
             anim.SetBool("IsMoving", true);
         }
         else { anim.SetBool("IsMoving", false); }
