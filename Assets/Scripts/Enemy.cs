@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     protected int damage;
     [SerializeField]
-    protected int speed;
+    protected float speed;
     protected bool isDead; 
 
     // Start is called before the first frame update
@@ -32,6 +32,10 @@ public class Enemy : MonoBehaviour
          
     }
 
+    private void Update()
+    {
+        Move();
+    }
     protected virtual void Move()
     {
         

@@ -17,4 +17,9 @@ public class TankEnemy : Enemy
         Vector3 lookPos = transform.position - target.transform.position;
         tankTop.transform.rotation = Quaternion.LookRotation(lookPos);
     }
+
+    protected override void Attack()
+    {
+
+    }
 }
