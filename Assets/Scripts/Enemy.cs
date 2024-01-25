@@ -8,13 +8,29 @@ public class Enemy : MonoBehaviour
     protected Animator anim;
     protected Health health;
     protected NavMeshAgent agent;
-    protected GameObject target;
+    protected GameObject player;
 
     [SerializeField]
     protected int damage;
     [SerializeField]
     protected float speed;
-    protected bool isDead; 
+    protected bool isDead;
+
+
+    [SerializeField]
+    protected GameObject attackPoint;
+    [SerializeField]
+    protected GameObject attackObject;
+
+    [SerializeField]
+    protected float attackTimerDelay = 2f;
+    protected float currentAttackTimer;
+
+    protected bool playerInRange;
+    [SerializeField]
+    protected float fovRadius = 2f;
+    [SerializeField]
+    protected LayerMask playerLayer; 
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -23,29 +39,37 @@ public class Enemy : MonoBehaviour
         health = GetComponent<Health>();
         agent = GetComponent<NavMeshAgent>();
 
-        if (health != null)
-        {
-            health.OnHealthDepleted += EnemyDeath; 
-        }
+        if (health != null) { health.OnHealthDepleted += EnemyDeath; }
 
-        target = GameObject.FindGameObjectWithTag("Player");
-         
+        player = GameObject.FindGameObjectWithTag("Player");
+        currentAttackTimer = attackTimerDelay;
     }
 
     private void Update()
     {
-        Move();
+        Move(player.transform.position);
     }
-    protected virtual void Move()
+
+    protected void FixedUpdate()
     {
-        
-        agent.destination = target.transform.position;
+        Collider[] colliders = Physics.OverlapSphere(transform.position, fovRadius, playerLayer);
+        if (colliders.Length > 0) { playerInRange = true; }
+        else { playerInRange = false; }
+    }
+
+    protected virtual void Move(Vector3 moveToPosition)
+    {
+        agent.destination = moveToPosition;
         agent.speed = speed;
     }
 
     protected virtual void Attack()
     {
+        GameObject spawnedAttack = Instantiate(attackObject, attackPoint.transform.position,
+           Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up));
 
+        Projectile projectileScript = spawnedAttack.GetComponent<Projectile>();
+        if (projectileScript != null) { projectileScript.SetDamage(damage); }
     }
 
     protected virtual void EnemyDeath()
