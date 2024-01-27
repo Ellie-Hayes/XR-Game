@@ -5,16 +5,13 @@ using UnityEngine;
 public class EndPlatform : MonoBehaviour
 {
     GameManager gameManager;
+    [SerializeField] GameObject completeCanvas;
+    Scenes sceneManager; 
 
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        sceneManager = FindObjectOfType<Scenes>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -23,11 +20,16 @@ public class EndPlatform : MonoBehaviour
         {
             if (gameManager.CurrentPickups >= gameManager.TotalPickups)
             {
-                Debug.Log("You won"); 
+               completeCanvas.SetActive(true);
+                StartCoroutine("StartMenuSwitch");
             }
         }
+    }
 
-        Debug.Log("You collided");
+    IEnumerator StartMenuSwitch()
+    {
+        yield return new WaitForSeconds(3f);
+        sceneManager.OpenMenu();
     }
 
 }

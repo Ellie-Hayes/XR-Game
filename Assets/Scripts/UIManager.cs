@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,22 +12,20 @@ public class UIManager : MonoBehaviour
     TextMeshProUGUI scoreText;
     int score = 0;
 
-    //[Header("Health UI")]
-    //TODO: Heath bar
+    [Header("Health UI")]
+    HealthBar healthBar; 
 
     // Start is called before the first frame update
     void Start()
     {
         Health PlayerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
         PlayerHealth.OnHealthChanged += UpdateHealth;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+       
+        healthBar = GetComponent<HealthBar>();
+        healthBar.SetMaxHealth(PlayerHealth.MaxHealth);
     }
-
+   
     public void AddScore(int scoreVal)
     {
         score += scoreVal;
@@ -38,8 +37,12 @@ public class UIManager : MonoBehaviour
         scoreText.text = "Score: " + score.ToString();
     }
 
-    void UpdateHealth(int currentHealth, int MaxHealth)
+    void UpdateHealth(int MaxHealth, int currentHealth)
     {
-        Debug.Log("Health Health"); 
+        Debug.Log(currentHealth);
+        healthBar.SetHealth(currentHealth);
     }
+
+  
+   
 }

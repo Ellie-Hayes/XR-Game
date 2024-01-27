@@ -15,26 +15,34 @@ public class PlayerMovement : MonoBehaviour
     Animator anim;
     Rigidbody rb;
 
-    Vector3 moveDirection; 
+    Vector3 moveDirection;
+
+    [SerializeField] GameObject footPos;
+    [SerializeField] LayerMask GroundLayer;
+
+    AudioSource source; 
+    bool onGround;
+
+    [SerializeField] AudioClip jumpClip; 
     void Start()
     {
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
+        source = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        Debug.Log(rb.velocity.y);
         float Horizontal = Input.GetAxis("Horizontal");
         float Vertical = Input.GetAxis("Vertical");
 
         moveDirection = new Vector3(Horizontal, 0.0f, Vertical);
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && onGround)
         {
             rb.AddForce(new Vector3(0.0f, JumpForce, 0.0f));
+            source.PlayOneShot(jumpClip);
         }
 
 
@@ -54,7 +62,12 @@ public class PlayerMovement : MonoBehaviour
     {
         float tempVelocity = rb.velocity.y;
         rb.velocity = moveDirection * speed * Time.fixedDeltaTime;
-        rb.velocity = new Vector3(rb.velocity.x, tempVelocity, rb.velocity.z); 
+        rb.velocity = new Vector3(rb.velocity.x, tempVelocity, rb.velocity.z);
+
+
+        Collider[] colliders = Physics.OverlapSphere(footPos.transform.position, 1, GroundLayer);
+        if (colliders.Length > 0) { onGround = true; }
+        else { onGround = false; }
     }
 
    

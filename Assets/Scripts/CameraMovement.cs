@@ -7,8 +7,8 @@ public class CameraMovement : MonoBehaviour
     // Start is called before the first frame update
 
     GameObject player;
-    [SerializeField]
-    Vector3 offset; 
+    [SerializeField] Vector3 offset; 
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");

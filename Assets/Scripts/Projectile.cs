@@ -22,11 +22,24 @@ public class Projectile : MonoBehaviour
 
     public void SetDamage(int passedDamage)
     {
-        damage= passedDamage;
+        damage = passedDamage;
     }
 
     void DestroyProjectile()
     {
+        Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (collision.gameObject.GetComponent<Health>())
+            {
+                collision.gameObject.GetComponent<Health>().ApplyDamage(damage);
+            }
+        }
+
         Destroy(gameObject);
     }
 }

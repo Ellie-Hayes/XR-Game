@@ -16,12 +16,6 @@ public class GameManager : MonoBehaviour
         totalPickups = pickups.Length;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void CollectPickup()
     {
         collectedPickups++;
